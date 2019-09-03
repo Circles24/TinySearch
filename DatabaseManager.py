@@ -13,6 +13,7 @@ class DatabaseManager:
 		self.imgColl = self.db['imgColl']
 		self.wikiColl = self.db['wikiColl']
 		self.webColl = self.db['webColl']
+		self.workedColl = self.db['workedColl']
 
 		DatabaseManager.__instanceRef = self
 
@@ -45,4 +46,8 @@ class DatabaseManager:
 	def getWebColl(self):
 
 		return self.webColl
+
+	def getWorkedColl(self):
+
+		return self.workedColl
 

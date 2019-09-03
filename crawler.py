@@ -1,6 +1,12 @@
-import pymongo import requests import DatabaseManager import random 
-import bs4 import validators import queue from url_normalize import 
-url_normalize
+import pymongo
+import requests 
+import DatabaseManager 
+import random 
+import bs4 
+import validators 
+import queue 
+from url_normalize import url_normalize
+import re
 
 DBM = DatabaseManager.DatabaseManager.getDatabaseManager()
 
@@ -9,6 +15,7 @@ wikiColl = DBM.getWikiColl()
 imgColl = DBM.getImgColl()
 webColl = DBM.getWebColl()
 searchColl = DBM.getSearchColl()
+workedColl = DBM.getWorkedColl()
 
 workQueue = queue.Queue()
 
@@ -22,9 +29,50 @@ def getRandData():
 
 	return (workColl.find({}).limit(20).skip(offset))
 
-def sanitizeURL():
 
-	retu
+
+def remove(url):
+
+	workColl.remove({'_id':url})
+
+
+def saveWebColl(tag,url):
+
+	try:
+
+		tag = tag.strip()
+
+		if (tag is None) or (tag is ""):
+			
+			return
+
+		webColl.insert_one({'tag':tag,'url':url})
+
+		if workedColl.count_documents({'_id':url},limit = 1) == 0:
+
+			workedColl.insert_one({'_id':url})
+
+	except Exception as ex:
+
+		print("exception@saveWebColl :: ",ex)
+
+
+def saveWorkColl(url):
+
+	try:
+
+		if workedColl.count_documents({'_id':url},limit = 1) == 0:
+
+			if workColl.count_documents({'_id':url},limit = 1) == 0:
+
+				workColl.insert_one({'_id':url})
+				print(" + ",url)
+	
+	except Exception as ex:
+
+		print("exception@saveWorkColl ",ex)
+
+
 
 def crawlEngine():
 
@@ -32,30 +80,56 @@ def crawlEngine():
 
 	while True:
 
-		if workQueue.empty() is True:
+		try:
 
-			return
+			if workQueue.empty() is True:
 
-		url = workQueue.get()
-		print("@ ",url)
+				return
 
-		soup = bs4.BeautifulSoup(requests.get(url).content,'html.parser')
-		refList = soup.find_all('a',href=True)
+			input("press enter to continue")
 
-		for link in refList:
+			url = url_normalize(workQueue.get())
 
-			url = url_normalize(link['href'])
+			if workedColl.count_documents({'_id':url},limit = 1) != 0:
 
-			if validators.url(url):
+				remove(url)
+				continue
 
-				try:
+			print("@ ",url)
 
-					workColl.insert_one({'_id':url})
-					print(" + ",url)
+			webPage = requests.get(url).content
+
+			soup = bs4.BeautifulSoup(webPage,'html.parser')
+
+			headings = soup.find_all(re.compile('^h[1-2]$'))
+
+			if soup.title.string is not None:
+
+				saveWebColl(soup.title.string,url)
+
+
+			for heading in headings:
+
+				saveWebColl(heading.text.strip(),url)
+
 				
-				except Exception as ex:
 
-					print(ex)
+			refList = soup.find_all('a',href=True)
+
+			for link in refList:
+
+				url = url_normalize(link['href'])
+
+				if validators.url(url):
+
+					saveWorkColl(url)
+
+		except Exception as ex:
+
+			print("exception@crawlerEngine ",ex)
+				
+
+		
 
 
 

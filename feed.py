@@ -104,7 +104,7 @@ def menu():
 
 				if currColl is workColl:
 
-					url = input("enter the url to be fed")
+					url = input("enter the url to be fed\n")
 
 					if validators.url(url) is True:
 
@@ -112,7 +112,7 @@ def menu():
 					
 					else :
 
-						print("you entered wrong url")
+						print("you entered wrong url\n")
 
 				if currColl is wikiColl:
 
