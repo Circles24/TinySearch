@@ -86,7 +86,7 @@ def crawlEngine():
 
 				return
 
-			input("press enter to continue")
+			# input("press enter to continue")
 
 			url = url_normalize(workQueue.get())
 

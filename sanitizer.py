@@ -38,7 +38,6 @@ def filter(wordList):
 
 		if canBeRemoved(word) is False:
 
-
 			tempList.append(word)
 			
 
@@ -55,13 +54,3 @@ def filter(wordList):
 			print("exception@sanitizer.filter :: ",ex)
 
 	return returnList
-
-while True:
-
-	str = input("enter the word to be sanitize\n")
-
-	if str == "exit":
-		break
-
-	print(filter(str.split()))
-	# print(canBeRemoved(str))
