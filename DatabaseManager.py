@@ -18,6 +18,7 @@ class DatabaseManager:
 		DatabaseManager.__instanceRef = self
 
 
+
 	def getDatabaseManager():
 
 		if DatabaseManager.__instanceRef is None:
@@ -27,9 +28,14 @@ class DatabaseManager:
 		return DatabaseManager.__instanceRef
 
 
+	def getDB(self):
+
+		return self.db
+
+
 	def getWorkColl(self):
 
-		return self.workColl 
+		return self.workColl
 
 	def getSearchColl(self):
 
@@ -50,4 +56,3 @@ class DatabaseManager:
 	def getWorkedColl(self):
 
 		return self.workedColl
-

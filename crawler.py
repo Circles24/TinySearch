@@ -1,10 +1,10 @@
 import pymongo
-import requests 
-import DatabaseManager 
-import random 
-import bs4 
-import validators 
-import queue 
+import requests
+import DatabaseManager
+import random
+import bs4
+import validators
+import queue
 from url_normalize import url_normalize
 import re
 
@@ -43,7 +43,7 @@ def saveWebColl(tag,url):
 		tag = tag.strip()
 
 		if (tag is None) or (tag is ""):
-			
+
 			return
 
 		webColl.insert_one({'tag':tag,'url':url})
@@ -67,7 +67,7 @@ def saveWorkColl(url):
 
 				workColl.insert_one({'_id':url})
 				print(" + ",url)
-	
+
 	except Exception as ex:
 
 		print("exception@saveWorkColl ",ex)
@@ -112,7 +112,7 @@ def crawlEngine():
 
 				saveWebColl(heading.text.strip(),url)
 
-				
+
 
 			refList = soup.find_all('a',href=True)
 
@@ -127,9 +127,9 @@ def crawlEngine():
 		except Exception as ex:
 
 			print("exception@crawlerEngine ",ex)
-				
 
-		
+
+
 
 
 

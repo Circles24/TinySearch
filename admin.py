@@ -3,6 +3,7 @@ import getpass
 import os
 import DatabaseManager
 import feed
+import reporter
 
 DBM = DatabaseManager.DatabaseManager.getDatabaseManager()
 
@@ -11,6 +12,7 @@ wikiColl = DBM.getWikiColl()
 imgColl = DBM.getImgColl()
 webColl = DBM.getWebColl()
 searchColl = DBM.getSearchColl()
+workedColl = DBM.getWorkedColl()
 
 def line():
     print('\n******************************************\n')
@@ -56,15 +58,16 @@ def innerMenu():
     line()
     print("                 ADMIN MENU               \n")
     print("1  ::  View workColl                         ")
-    print("2  ::  View searchColl                       ")
+    print("2  ::  View workedColl                       ")
     print("3  ::  View wikiColl                         ")
-    print("4  ::  View webColl                          ")
+    print("4  ::  View searchColl                       ")
     print("5  ::  View imgColl                          ")
-    print("6  ::  Wipe whole Database                   ")
-    print("7  ::  Feed test data                        ")
-    print("8  ::  Get Stat Report                       ")
-    print("9  ::  Change Password                       ")
-    print("10 ::  exit                                  ")
+    print("6  ::  View webColl                          ")
+    print("7  ::  Wipe whole Database                   ")
+    print("8  ::  Feed test data                        ")
+    print("9  ::  Get Stat Report                       ")
+    print("10 ::  Change Password                       ")
+    print("11 ::  exit                                  ")
 
 
     choice = input()
@@ -77,7 +80,7 @@ def innerMenu():
         print("wrong input")
         return 0
 
-    if choice < 0 or choice > 8:
+    if choice < 0 or choice > 11:
         print("wrong input")
         return 0
 
@@ -94,68 +97,85 @@ def menu():
 
     if choice is 1:
 
-        email_list = email_coll.find({})
-        for email in email_list:
+        workCollList = workColl.find({})
 
-            print(email['_id'],end=' ')
-            print(trackerdb.command("collstats", email['_id'])['count'],"\n")
+        for data in workCollList:
+
+            print(data['_id'])
+
+        print("been there done that")
 
     elif choice is 2:
 
-        email_list = email_coll.find({})
+        workedCollList = workedColl.find({})
 
-        for email in email_list:
+        for data in workedCollList:
 
-            print('\n',email['_id'])
-            hline()
-
-            user_coll = trackerdb[email['_id']]
-            user_url_list = user_coll.find({})
-
-            for url in user_url_list:
-                print('\n',url['url'])
-
-            hline()
+            print(data['_id'])
 
 
     elif choice is 3:
 
-        usr_email = input("enter the email of the user\n")
+        wikiCollList = wikiCollList.find({})
 
-        exists = False
+        for data in wikiCollList:
 
-        temp_list = email_coll.find({'_id':usr_email})
-        for i in temp_list:
-            exists = True
-
-        if exists is True:
-
-            usr_coll = trackerdb[usr_email]
-            url_list = usr_coll.find({})
-
-            for url in url_list:
-                print('\n',url['url'])
-
-        else :
-
-            print("wrong user")
+            print(data['_id'])
 
     elif choice is 4:
 
-        os.system("python3 clean_db.py")
+        searchCollList = searchColl.find({})
+
+        for data in searchCollList:
+
+            print(data['_id'])
 
     elif choice is 5:
 
-        os.system("python3 feed_db.py")
+        searchCollList = searchColl.find({})
+
+        for data in SearchCollList:
+
+            print(data['_id'])
 
     elif choice is 6:
 
-        stats_list = trackerdb['stats'].find({})
+        webCollList = webColl.find({})
 
-        for stat in stats_list:
-            print('\n',stat['name']," ",stat["count"])
+        for data in webCollList:
+
+            print(data['tag']," ")
 
     elif choice is 7:
+
+        print("continue to wipe database (1/0) ")
+
+        choice = int(input())
+
+        if choice == 1:
+
+            workColl.drop()
+            workedColl.drop()
+            wikiColl.drop()
+            searchColl.drop()
+            imgColl.drop()
+            webColl.drop()
+
+            print("your whole database is wiped")
+
+        else :
+
+            return True
+
+    elif choice is 8:
+
+        feed.menu()
+
+    elif choice is 9:
+
+        reporter.report()
+
+    elif choice is 10:
 
         newPass1 = getpass.getpass(prompt='New Password: ', stream=None)
         newPass2 = getpass.getpass(prompt='Repeat New Password',stream=None)
@@ -181,6 +201,8 @@ def menu():
 
 def main():
 
+    print("@ main")
+
     print("Welcome Admin")
     if authenticate() is False:
 
@@ -192,6 +214,6 @@ def main():
             break
 
     print("Have a nice day Admin")
-# main()
 
-innerMenu()
+
+main()

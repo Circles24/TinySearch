@@ -26,7 +26,7 @@ def collChoice():
 	print("4  ::   webColl                          ")
 	print("5  ::   imgColl                          ")
 	print("6  ::   exit                             ")
-   
+
 	return int(input())
 
 def opChoice():
@@ -85,7 +85,7 @@ def menu():
 
 				continue
 
-			
+
 			choice = opChoice()
 
 			if choice is 1: #view
@@ -109,7 +109,9 @@ def menu():
 					if validators.url(url) is True:
 
 						workColl.insert_one({'_id':url})
-					
+
+						print("url inserted")
+
 					else :
 
 						print("you entered wrong url\n")
@@ -123,7 +125,7 @@ def menu():
 					if validators.url(url) is True:
 
 						workColl.insert_one({'_id':tag, 'title':title, 'url':url  })
-					
+
 					else :
 						print("you entered wrong url")
 
@@ -136,7 +138,7 @@ def menu():
 					if validators.url(url) is True:
 
 						webColl.insert_one({'_id':tag, 'title':title, 'url':url  })
-					
+
 					else :
 						print("you entered wrong url")
 
@@ -150,7 +152,7 @@ def menu():
 			elif choice is 4: #remove
 
 				print("choice is 4")
-			
+
 			elif choice is 5:
 
 				print("choice is 5")
@@ -163,4 +165,4 @@ def menu():
 			print("wrong data entered")
 			print(ex)
 
-menu()
+# menu()
