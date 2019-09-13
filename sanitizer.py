@@ -10,7 +10,7 @@ def sanitize(str):
 
 	for i in str:
 		if i == ' ':
-			raise Exception("wrong string provided") 
+			raise Exception("wrong string provided")
 
 	if( regex.search(str) == None):
 
@@ -39,7 +39,7 @@ def filter(wordList):
 		if canBeRemoved(word) is False:
 
 			tempList.append(word)
-			
+
 
 	returnList = []
 

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>TinySearch</title>
+  </head>
+  <body>
+
+    <h1>Results</h1>
+
+    <ul>
+      {% for result in resultList: %}
+        <li> {{ result[0] }} </li>
+        <a href={{ result[1] }}> {{result[1]}} </a>
+        <br>
+      {% endfor %}
+    </ul>
+
+
+  </body>
+</html>

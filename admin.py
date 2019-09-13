@@ -32,7 +32,7 @@ def authenticate():
 
     while(True):
 
-        user_pass = getpass.getpass(prompt='Password: ', stream=None) 
+        user_pass = getpass.getpass(prompt='Password: ', stream=None)
 
         if AdminPass == user_pass:
 
@@ -73,7 +73,7 @@ def innerMenu():
         choice = int(choice)
 
     except ValueError:
-        
+
         print("wrong input")
         return 0
 
@@ -81,8 +81,8 @@ def innerMenu():
         print("wrong input")
         return 0
 
-    return  choice 
- 
+    return  choice
+
 def menu():
 
     choice = 0
@@ -116,10 +116,10 @@ def menu():
                 print('\n',url['url'])
 
             hline()
-        
+
 
     elif choice is 3:
-        
+
         usr_email = input("enter the email of the user\n")
 
         exists = False
@@ -149,7 +149,7 @@ def menu():
         os.system("python3 feed_db.py")
 
     elif choice is 6:
-        
+
         stats_list = trackerdb['stats'].find({})
 
         for stat in stats_list:
@@ -157,7 +157,7 @@ def menu():
 
     elif choice is 7:
 
-        newPass1 = getpass.getpass(prompt='New Password: ', stream=None) 
+        newPass1 = getpass.getpass(prompt='New Password: ', stream=None)
         newPass2 = getpass.getpass(prompt='Repeat New Password',stream=None)
 
         if newPass1 == newPass2:
@@ -167,7 +167,7 @@ def menu():
             f.close()
 
             print("Password changed successfully")
-        
+
         else:
 
             print("both password dont match")
@@ -183,7 +183,7 @@ def main():
 
     print("Welcome Admin")
     if authenticate() is False:
-        
+
         print("Bye")
         return
 
