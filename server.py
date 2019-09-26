@@ -20,7 +20,7 @@ def result():
 
 	resultList = tinySearch.search(request.form['Search'])
 
-	return render_template("result.html",resultList=resultList)
+	return render_template("result.html",query=request.form['Search'],resultList=resultList)
 
 
 if __name__ == '__main__':

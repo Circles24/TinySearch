@@ -34,7 +34,7 @@ def filter(wordList):
 
 	for word in wordList:
 
-		print("   ",word,"  ",canBeRemoved(word))
+		# print("   ",word,"  ",canBeRemoved(word))
 
 		if canBeRemoved(word) is False:
 
@@ -52,5 +52,7 @@ def filter(wordList):
 		except Exception as ex:
 
 			print("exception@sanitizer.filter :: ",ex)
+
+	# print("returning sanitized list")
 
 	return returnList

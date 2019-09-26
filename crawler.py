@@ -30,7 +30,6 @@ def getRandData():
 	return (workColl.find({}).limit(20).skip(offset))
 
 
-
 def remove(url):
 
 	workColl.remove({'_id':url})
@@ -46,7 +45,19 @@ def saveWebColl(tag,url):
 
 			return
 
-		webColl.insert_one({'tag':tag,'url':url})
+		try:
+
+			count = DBM.getDB().command("collstats", "webColl")["count"]
+
+			count = int(count)
+
+		except Exception as ex:
+
+			print(ex)
+
+			count = 0
+
+		webColl.insert_one({'_id':count+1,'tag':tag,'url':url})
 
 		if workedColl.count_documents({'_id':url},limit = 1) == 0:
 
@@ -66,6 +77,7 @@ def saveWorkColl(url):
 			if workColl.count_documents({'_id':url},limit = 1) == 0:
 
 				workColl.insert_one({'_id':url})
+				
 				print(" + ",url)
 
 	except Exception as ex:
@@ -86,14 +98,14 @@ def crawlEngine():
 
 				return
 
-			# input("press enter to continue")
-
 			url = url_normalize(workQueue.get())
 
 			if workedColl.count_documents({'_id':url},limit = 1) != 0:
 
 				remove(url)
 				continue
+
+			url = url_normalize(url)
 
 			print("@ ",url)
 
